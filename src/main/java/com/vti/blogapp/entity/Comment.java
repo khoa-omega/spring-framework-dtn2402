@@ -1,9 +1,9 @@
 package com.vti.blogapp.entity;
 
+import com.vti.blogapp.generator.CommentIdGenerator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -11,10 +11,10 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -23,8 +23,12 @@ import java.util.UUID;
 public class Comment {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GenericGenerator(
+            name = "comment_id_generator",
+            type = CommentIdGenerator.class
+    )
+    @GeneratedValue(generator = "comment_id_generator")
+    private String id;
 
     @Column(name = "name", length = 50, nullable = false)
     private String name;
