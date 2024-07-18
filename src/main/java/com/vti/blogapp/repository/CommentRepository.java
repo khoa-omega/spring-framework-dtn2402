@@ -22,7 +22,7 @@ public interface CommentRepository
     // VD: Lấy ra tất cả comment theo name hoặc email
     List<Comment> findByNameOrEmail(String name, String email);
     // VD: Lấy ra tất cả comment theo post id
-    Page<Comment> findByPostId(Long postId, Pageable pageable);
+    // Page<Comment> findByPostId(Long postId, Pageable pageable);
 
     // 2. @Query
     @Query("DELETE FROM Comment WHERE email = :email")
