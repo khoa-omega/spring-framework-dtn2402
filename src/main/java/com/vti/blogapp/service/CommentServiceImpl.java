@@ -1,10 +1,12 @@
 package com.vti.blogapp.service;
 
 import com.vti.blogapp.dto.CommentDto;
+import com.vti.blogapp.entity.PostComment;
 import com.vti.blogapp.form.CommentCreateForm;
 import com.vti.blogapp.form.CommentUpdateForm;
 import com.vti.blogapp.mapper.CommentMapper;
 import com.vti.blogapp.repository.CommentRepository;
+import com.vti.blogapp.repository.PostCommentRepository;
 import com.vti.blogapp.repository.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,7 @@ import java.util.Arrays;
 public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
     private PostRepository postRepository;
+    private PostCommentRepository postCommentRepository;
 
     @Override
     public Page<CommentDto> findAll(Pageable pageable) {
@@ -48,8 +51,11 @@ public class CommentServiceImpl implements CommentService {
         }
         var post = optional.get();
         var comment = CommentMapper.map(form);
-        comment.setPosts(Arrays.asList(post));
         var savedComment = commentRepository.save(comment);
+        var postComment = new PostComment();
+        postComment.setPost(post);
+        postComment.setComment(savedComment);
+        postCommentRepository.save(postComment);
         return CommentMapper.map(savedComment);
     }
 
