@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -49,8 +50,8 @@ public class Post {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "post")
-    private List<Comment> comments;
+    @OneToOne(mappedBy = "post")
+    private Comment comment;
 
     public enum Status {
         OPENING, CLOSED
