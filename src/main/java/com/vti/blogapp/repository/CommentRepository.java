@@ -12,6 +12,22 @@ import java.util.List;
 
 public interface CommentRepository
         extends JpaRepository<Comment, Comment.PrimaryKey> {
+    // 1. Method name
+    // Tiền tố: findBy, existsBy, countBy, deleteBy
+    // VD: Lấy ra tất cả comment theo name
+    List<Comment> findByName(String name);
+
+    // VD: Lấy ra tất cả comment có body chứa "search"
+    List<Comment> findByBodyContaining(String search);
+
+    // VD: Lấy ra tất cả comment theo name hoặc email
+    List<Comment> findByNameOrEmail(String name, String email);
+
     // VD: Lấy ra tất cả comment theo post id
     Page<Comment> findByPostId(Long postId, Pageable pageable);
+
+    // 2. @Query
+    @Query("DELETE FROM Comment WHERE email = :email")
+    @Modifying
+    void deleteByEmail(@Param("email") String email);
 }
